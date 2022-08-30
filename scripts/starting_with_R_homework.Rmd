@@ -1,0 +1,87 @@
+---
+title: "Starting with R - Homework"
+author: "Laura Bock Paulsen"
+date: "8/30/2022"
+output: html_document
+---
+
+### 1) Use R to figure out how many elements in the vector below are greater than 2 and then tell me what their sum (of the larger than 2 elements) is.
+
+```{r}
+rooms <- c(1, 2, 4, 5, 1, 3, 1, NA, 3, 1, 3, 2, 1, NA, 1, 8, 3, 1, 4, NA, 1, 3, 1, 2, 1, 7, 1, 9, 3, NA)
+
+rooms_noNA <- na.omit(rooms)
+```
+
+```{r}
+sum(rooms_noNA > 2)
+```
+
+Explanation of why the above works:
+1. The NA's are omitted
+2. Then we check for each element of the vector whether the number is larger than zero. This returns a new vector containing either TRUE or FALSE for each original element
+```{r}
+rooms_noNA > 2
+```
+
+3. As FALSE and TRUE also can be seen as 0 and 1's we find the number of items greater than 2 by taking the sum of the vector. 
+
+
+Then their sum is calculated:
+```{r}
+sum(rooms_noNA[rooms_noNA > 2])
+```
+
+
+
+### 2) What type of data is in the 'rooms' vector?
+```{r}
+class(rooms)
+```
+
+
+### 3) Submit the following image to Github: Inside your R Project (.Rproj), install the 'tidyverse' package and use the download.file() and read_csv() function to read the SAFI_clean.csv dataset into your R project as 'interviews' digital object (see instructions in https://datacarpentry.org/r-socialsci/setup.html and 'Starting with Data' section). Take a screenshot of your RStudio interface showing
+#### a) the line of code you used to create the object,
+```{r, warning=FALSE}
+# i prefer using the p_load function from the package pacman as it both opens the package as well as automatically installing the package if you don't have it yet.
+pacman::p_load('tidyverse')
+
+# downloading file
+download.file("../https://ndownloader.figshare.com/files/11492171",
+             "data/SAFI_clean.csv", mode = "wb")
+
+# reading the file into R
+interviews <- read.csv('../data/SAFI_clean.csv')
+```
+
+
+
+#### b) the 'interviews' object in the Environment, and
+#### c) the file structure of your R project in the bottom right "Files" pane.
+### d) Save the screenshot as an image and put it in your AUID_lastname_firstname repository inside our Github organisation (github.com/Digital-Methods-HASS) or equivalent. Place here the URL leading to the screenshot in your repository.
+
+4) Challenge: Attached to this assignment you will find Danish monarchs dataset that might need to be cleaned up a bit. Load the provided 'kings.csv" dataset into R as a tibble. Calculate the mean() and median() duration of rule over time and find the three mondarchs ruling the longest. How many days did they rule (accounting for transition year?)
+
+```{r, warning=FALSE}
+# Using read.csv2 to indicate that the data is semicolon seperated (read.csv works for commaseperated files)
+setwd('..')
+kings <- read.csv2("data/kings.csv")
+```
+
+Calculating the duration which will be used for calculating the mean and median
+```{r}
+duration <- kings$End_date - kings$Start_date
+```
+
+```{r}
+mean(duration, na.rm = T) # using na.rm to exclude NA's from the calculation
+```
+
+```{r}
+median(duration, na.rm = T)
+```
+
+```{r}
+max(duration, na.rm = T)
+```
+
