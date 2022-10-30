@@ -5,18 +5,15 @@ date: "10/27/2022"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 pacman::p_load(dplyr, gapminder)
 ```
-
-Use the gapminder dataset from Week 43 to produce solutions to the three tasks below. Post the .R script or .Rmd and .html in your au##### github repository and link it here:
 
 ```{r}
 df <-  gapminder
 ```
 
-# Exercise 1:
-Define a defensive function that calculates the Gross Domestic Product of a nation from the data available in the gapminder dataset. You can use the population and GDPpercapita columns for it. Using that function, calculate the GDP of Denmark in the following years: 1967, 1977, 1987, 1997, 2007, and 2017.
+### Exercise 1: Define a defensive function that calculates the Gross Domestic Product of a nation from the data available in the gapminder dataset. You can use the population and GDPpercapita columns for it. Using that function, calculate the GDP of Denmark in the following years: 1967, 1977, 1987, 1997, 2007, and 2017.
 ```{r}
 calculate_GDP <- function(dat){
     if(any(names(dat) == c('pop', 'gdpPercap'))){
@@ -34,8 +31,7 @@ df %>% filter(country == 'Denmark' & year %in% c(1967, 1977, 1987, 1997, 2007, 2
 
 Above the gdp calculated for Denmark in the wanted years can be seen. Do however note that the year 2017 is not included here, since it was not present in the data. 
 
-## Exercise 2:
-Write a script that loops over each country in the gapminder dataset, tests whether the country starts with a ‘B’ , and prints out whether the life expectancy is smaller than 50, between 50 and 70, or greater than 70. (Hint: remember the grepl function, and review the Control Flow tutorial)
+### Exercise 2: Write a script that loops over each country in the gapminder dataset, tests whether the country starts with a ‘B’ , and prints out whether the life expectancy is smaller than 50, between 50 and 70, or greater than 70. (Hint: remember the grepl function, and review the Control Flow tutorial)
 ```{r}
 unique_countries = unique(df$country)
 
