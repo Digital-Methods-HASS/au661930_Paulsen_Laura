@@ -15,21 +15,42 @@ df <-  gapminder
 
 ### Exercise 1: Define a defensive function that calculates the Gross Domestic Product of a nation from the data available in the gapminder dataset. You can use the population and GDPpercapita columns for it. Using that function, calculate the GDP of Denmark in the following years: 1967, 1977, 1987, 1997, 2007, and 2017.
 ```{r}
-calculate_GDP <- function(dat){
-    if(any(names(dat) == c('pop', 'gdpPercap'))){
-      dat$gdp = dat$pop * dat$gdpPercap
-    }
-    else{stop("dat must include columns'pop' and 'gdpPercap' for this computation to continue")
-    }
-  dat
+calculate_GDP <- function(data, year, country){
+  if(any(data$country == country) & any(data$year == year)){ # checking if the year and country is in the data
+    filt_dat <- data[data$year==year,] # subsetting
+    filt_dat <- filt_dat[filt_dat$country == country,]
+  }
+  else {
+    stop("Year and/or country not found in data")
+  }
+  
+  if(any(names(filt_dat) == c('pop', 'gdpPercap'))){
+    gdp <- filt_dat$pop * filt_dat$gdpPercap
+  }
+  
+  else{
+    stop("dat must include columns'pop' and 'gdpPercap' for this computation to continue")
+  }
+  
+  gdp
  }
 ```
 
 ```{r}
-df %>% filter(country == 'Denmark' & year %in% c(1967, 1977, 1987, 1997, 2007, 2017)) %>% calculate_GDP() %>% select(year, pop, gdpPercap, gdp)
+calculate_GDP(data = df, year = 1967, country = 'Denmark')
+calculate_GDP(data = df, year = 1977, country = 'Denmark')
+calculate_GDP(data = df, year = 1987, country = 'Denmark')
+calculate_GDP(data = df, year = 1997, country = 'Denmark')
+calculate_GDP(data = df, year = 2007, country = 'Denmark')
 ```
 
-Above the gdp calculated for Denmark in the wanted years can be seen. Do however note that the year 2017 is not included here, since it was not present in the data. 
+
+Above the gdp calculated for Denmark in the wanted years can be seen. Do however note that the year 2017 is not included here, since it was not present in the data.
+```{r}
+# Running this code will throw an error 
+#calculate_GDP(data = df, year = 2017, country = 'Denmark')
+```
+
 
 ### Exercise 2: Write a script that loops over each country in the gapminder dataset, tests whether the country starts with a ‘B’ , and prints out whether the life expectancy is smaller than 50, between 50 and 70, or greater than 70. (Hint: remember the grepl function, and review the Control Flow tutorial)
 ```{r}
@@ -51,10 +72,10 @@ for(i in 1:length(unique_countries)){ # loops over each country
   if(mean_life < 50){
     mean_life_info = '< 50'
   }
-  if(mean_life>50 & mean_life<70){
+  else if(mean_life>50 & mean_life<70){
     mean_life_info = 'between 50 and 70'
   }
-  if(mean_life>70){
+  else if(mean_life>70){
     mean_life_info = '> 70'
   }
 
